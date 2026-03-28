@@ -31,11 +31,6 @@ export default function CharactersPage() {
     setLoading(false);
   };
 
-  //  primeira carga
-  useEffect(() => {
-    fetchCharacters();
-  }, []);
-
   // observer (scroll)
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
