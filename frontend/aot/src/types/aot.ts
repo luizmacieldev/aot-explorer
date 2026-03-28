@@ -1,10 +1,21 @@
-export type Titan {
+export interface CharacterBrief {
   id: number;
   name: string;
   img: string;
 }
 
-export type Character {
+export interface Titan {
+  id: number;
+  name: string;
+  img: string;
+  height: string;
+  abilities: string[];
+  allegiance: string;
+  current_inheritor: CharacterBrief | null;
+  former_inheritors: CharacterBrief[];
+}
+
+export interface Character {
   id: number;
   name: string;
   img: string;

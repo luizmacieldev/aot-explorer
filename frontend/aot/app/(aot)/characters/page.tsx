@@ -3,15 +3,11 @@
 import { useEffect, useState, useRef } from "react";
 import { api } from "@/services/api";
 import Card from "@/components/Card";
+import { CharacterBrief } from "@/types/aot";
 
-interface Character {
-  id: number;
-  name: string;
-  img: string;
-}
 
 export default function CharactersPage() {
-  const [characters, setCharacters] = useState<Character[]>([]);
+  const [characters, setCharacters] = useState<CharacterBrief[]>([]);
   const [nextPage, setNextPage] = useState<string | null>("characters/");
   const [loading, setLoading] = useState(false);
 
