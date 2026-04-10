@@ -121,6 +121,7 @@ export default function Page() {
                   <Image
                     src={char.img}
                     alt={char.name}
+                    fill
                     className="object-cover"
                   />
                 </div>
