@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from aot.api.urls import urlpatterns as api_urlpatterns
+from stats.api.urls import urlpatterns as stats_api_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urlpatterns)),
-
+    path('api/stats/', include(stats_api_urlpatterns)),
 ]

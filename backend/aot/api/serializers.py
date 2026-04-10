@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from aot.models import Titan, Character, Organization, Location, Episode, Favorite
+from aot.models import Titan, Character, Organization, Location, Episode
 
 class CharacterSimpleSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source="api_id", read_only=True)
@@ -123,24 +123,3 @@ class TitanSerializer(serializers.ModelSerializer):
             "former_inheritors",
             "allegiance",
         )
-
-
-class FavoriteSerializer(serializers.ModelSerializer):
-    content_object = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Favorite
-        fields = ("id", "user", "content_type", "object_id", "content_object", "created_at")
-
-    def get_content_object(self, obj):
-        if isinstance(obj.content_object, Character):
-            return CharacterSerializer(obj.content_object).data
-        elif isinstance(obj.content_object, Titan):
-            return TitanSerializer(obj.content_object).data
-        elif isinstance(obj.content_object, Organization):
-            return OrganizationSerializer(obj.content_object).data
-        elif isinstance(obj.content_object, Location):
-            return LocationSerializer(obj.content_object).data
-        elif isinstance(obj.content_object, Episode):
-            return EpisodeSerializer(obj.content_object).data
-        return None

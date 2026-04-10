@@ -56,7 +56,7 @@ export default function CharactersPage() {
         gap-6
       ">
         {characters.map((char) => (
-          <Card key={char.id} item={char} href="/characters" />
+          <Card key={char.id} item={char} href="/characters" type="character" />
         ))}
       </div>
 

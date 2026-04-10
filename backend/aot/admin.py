@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from aot.models import Titan, Character, Organization, Location, Episode,  Favorite
+from aot.models import Titan, Character, Organization, Location, Episode
 
 
 @admin.register(Titan)
@@ -40,11 +40,3 @@ class EpisodeAdmin(admin.ModelAdmin):
     list_display = ("api_id", "episode_code", "name")
     search_fields = ("name", "episode_code")
     readonly_fields = ("api_id",)
-
-
-@admin.register(Favorite)
-class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ("user", "content_object", "created_at")
-    list_filter = ("user", "content_type")
-    search_fields = ("user__username",)
-    

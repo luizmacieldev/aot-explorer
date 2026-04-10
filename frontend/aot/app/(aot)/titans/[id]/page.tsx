@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { api } from "@/services/api";
 import { Titan } from "@/types/aot";
 
@@ -26,9 +27,11 @@ export default function Page() {
 
       {/* 🔥 HERO */}
       <div className="relative h-[400px] w-full">
-        <img
+        <Image
           src={titan.img || "/no-image.png"}
-          className="w-full h-full object-cover"
+          alt={titan.name}
+          fill
+          className="object-cover"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
@@ -83,10 +86,14 @@ export default function Page() {
               href={`/characters/${titan.current_inheritor.id}`}
               className="flex items-center gap-4 hover:scale-105 transition"
             >
-              <img
-                src={titan.current_inheritor.img || "/no-image.png"}
-                className="w-16 h-16 rounded-full object-cover border border-red-800"
-              />
+              <div className="relative w-16 h-16 rounded-full overflow-hidden border border-red-800">
+                <Image
+                  src={titan.current_inheritor.img}
+                  alt={titan.current_inheritor.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
 
               <p className="font-semibold">
                 {titan.current_inheritor.name}
@@ -110,10 +117,13 @@ export default function Page() {
                 href={`/characters/${char.id}`}
                 className="text-center hover:scale-105 transition"
               >
-                <img
-                  src={char.img || "/no-image.png"}
-                  className="w-16 h-16 rounded-full object-cover border border-gray-700"
-                />
+                <div className="relative w-16 h-16 rounded-full overflow-hidden border border-gray-700">
+                  <Image
+                    src={char.img}
+                    alt={char.name}
+                    className="object-cover"
+                  />
+                </div>
 
                 <p className="text-sm mt-1">
                   {char.name}

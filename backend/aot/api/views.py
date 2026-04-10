@@ -2,9 +2,8 @@ from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
-from aot.models import Titan, Character, Organization, Location, Episode, Favorite
+from aot.models import Titan, Character, Organization, Location, Episode
 from .serializers import (
-    FavoriteSerializer,
     TitanSerializer,
     CharacterSerializer,
     OrganizationSerializer,
@@ -14,7 +13,7 @@ from .serializers import (
 
 
 class AttackOnTitanApiPagination(PageNumberPagination):
-    """Mesmo envelope que https://api.attackontitanapi.com (info + results)."""
+    """ https://api.attackontitanapi.com (info + results)."""
 
     page_size = 20
     page_query_param = "page"
@@ -84,7 +83,3 @@ class EpisodeViewSet(viewsets.ModelViewSet):
     serializer_class = EpisodeSerializer
     pagination_class = AttackOnTitanApiPagination
     
-class FavoriteViewSet(viewsets.ModelViewSet):
-    queryset = Favorite.objects.all().select_related("content_type", "user")
-    serializer_class = FavoriteSerializer
-    pagination_class = AttackOnTitanApiPagination

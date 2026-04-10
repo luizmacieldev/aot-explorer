@@ -21,6 +21,7 @@ export interface Character {
   img: string;
   status: string;
   gender: string;
+  height:string;
   occupation: string | string[];
   alias: string[];
   species: string[];
@@ -34,4 +35,35 @@ export interface Character {
     name: string;
     episode: string;
   }[];
+}
+
+
+export interface Episode {
+  id: number;
+  name: string;
+  img: string;
+  episode: string;
+  characters: Character[];
+}
+
+export interface Organization {
+  id: number;
+  name: string;
+  img: string;
+  occupations: string[];
+  notable_members: Character[];
+  affiliation: string;
+  debut: Episode | null;
+}
+
+
+export interface Location {
+  id: number;
+  name: string;
+  img: string;
+  territory: string;
+  region: string;
+  notable_inhabitants: Character[];
+  notable_former_inhabitants: Character[];
+  debut: Episode | null;
 }
