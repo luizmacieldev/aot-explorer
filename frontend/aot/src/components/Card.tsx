@@ -33,8 +33,7 @@ const imageSrc = item.img && item.img !== "unknown" && item.img.trim() !== ""? i
           <Image
             src={imageSrc}
             alt={item.name}
-                                width={400}
-                    height={400}
+            fill
             className="object-cover"
             loading="lazy"
 
