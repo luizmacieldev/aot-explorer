@@ -27,6 +27,10 @@ export default function CharactersPage() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
+
   // observer (scroll)
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

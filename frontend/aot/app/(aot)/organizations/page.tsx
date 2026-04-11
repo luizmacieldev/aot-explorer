@@ -55,6 +55,14 @@
         return () => observer.disconnect();
       }, [fetchOrgs]);
 
+      if (loading && orgs.length === 0) {
+        return (
+          <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 animate-pulse">
+            Loading organizations...
+          </div>
+        );
+      }
+
       return (
         <div className="p-8 max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-red-400 mb-6">
@@ -67,6 +75,9 @@
             ))}
           </div>
 
+          {loading && orgs.length > 0 && (
+            <p className="text-center mt-4 text-gray-400">Loading more organizations...</p>
+          )}
 
           <div ref={observerRef} className="h-10 mt-10" />
         </div>
