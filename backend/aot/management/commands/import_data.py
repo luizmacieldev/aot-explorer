@@ -445,7 +445,7 @@ def link_organizations(data):
 
 
 class Command(BaseCommand):
-    help = "Importa dados da API do Attack on Titan para o banco de dados local."
+    help = "Import Attack on Titan API data into the local database."
     def handle(self, *args, **kwargs):
 
         self.stdout.write("Loading API data once...")
@@ -465,4 +465,4 @@ class Command(BaseCommand):
         link_organizations(data["organizations"])
         link_locations(data["locations"])
 
-        self.stdout.write(self.style.SUCCESS("Pipeline completo!"))
+        self.stdout.write(self.style.SUCCESS("Pipeline completed!"))
