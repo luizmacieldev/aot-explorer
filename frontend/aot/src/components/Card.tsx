@@ -29,7 +29,7 @@ const imageSrc = item.img && item.img !== "unknown" && item.img.trim() !== ""? i
     <Link href={`${href}/${item.id}`}>
       <div className="bg-slate-900 border border-red-900 rounded-2xl overflow-hidden shadow-lg hover:scale-105 hover:shadow-red-900/40 transition duration-500">
         
-        <div className="relative w-full aspect-[16/9]">
+        <div className="relative w-full h-[300px]">
           <Image
             src={imageSrc}
             alt={item.name}

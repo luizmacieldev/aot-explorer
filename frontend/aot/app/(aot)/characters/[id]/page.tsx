@@ -40,9 +40,16 @@ export default function Page() {
             {character.name} 
 
           </h1>
-        <Link href="/characters" className="text-gray-400 hover:text-red-400">
-            ← Back
+
+      {/* 🔙 BACK */}
+      <div className="max-w-6xl mx-auto px-6 mt-4">
+        <Link
+          href="/characters"
+          className="text-gray-400 hover:text-red-400"
+        >
+          ← Back
         </Link>
+      </div>
         </div>
         
       </div>

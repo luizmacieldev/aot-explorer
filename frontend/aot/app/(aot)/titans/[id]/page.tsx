@@ -40,9 +40,7 @@ export default function Page() {
           <h1 className="text-4xl font-bold text-red-400">
             {titan.name}
           </h1>
-        </div>
-      </div>
-
+          
       {/* 🔙 BACK */}
       <div className="max-w-6xl mx-auto px-6 mt-4">
         <Link
@@ -52,6 +50,9 @@ export default function Page() {
           ← Back
         </Link>
       </div>
+        </div>
+      </div>
+
 
       {/* 🔥 CONTENT */}
       <div className="p-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-6">

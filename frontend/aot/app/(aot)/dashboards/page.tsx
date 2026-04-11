@@ -10,27 +10,34 @@ import {
   YAxis,
   Tooltip,
   Cell,
+  Pie,
+  PieChart,
 } from "recharts";
 import { motion } from "framer-motion";
 
 export default function DashboardPage() {
   const [topCharacters, setTopCharacters] = useState<any[]>([]);
   const [status, setStatus] = useState<any[]>([]);
+  const [gender, setGender] = useState<any[]>([]);
   const [episodes, setEpisodes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [c, s, e] = await Promise.all([
+        const [c, s, e, g] = await Promise.all([
           api.get("stats/top-characters/"),
           api.get("stats/status-distribution/"),
           api.get("stats/top-episodes/"),
+          api.get("stats/gender-distribution/"),
         ]);
 
         setTopCharacters(c.data);
         setStatus(s.data);
         setEpisodes(e.data);
+        setGender(g.data);
       } catch (err) {
         console.error("Dashboard error:", err);
       } finally {
@@ -50,11 +57,9 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white px-8 py-10 space-y-10">
-      
-      {/* HEADER */}
+    <div className="min-h-screen bg-[#0f172a] text-white px-4 md:px-8 py-10 space-y-10">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">
           Attack on Titan Analytics
         </h1>
         <p className="text-gray-400 text-sm mt-1">
@@ -62,8 +67,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* HERO STATS */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard
           title="Top Characters by appearances"
           value={topCharacters[0]?.name}
@@ -83,19 +87,37 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* MAIN GRID */}
-      <div className="grid grid-cols-2 gap-6">
-
-        {/* TOP CHARACTERS */}
-        <GlassCard className="col-span-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <GlassCard className="col-span-full">
           <h2 className="section-title">Top Characters by appearances</h2>
 
           <div className="h-[320px]">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topCharacters}>
-                <XAxis dataKey="name" stroke="#9ca3af" />
+                <XAxis
+                  dataKey="name"
+                  stroke="#9ca3af"
+                  hide={isMobile}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                  minTickGap={20}
+                />
                 <YAxis stroke="#9ca3af" />
-                <Tooltip />
+
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload || !payload.length) return null;
+                    const data = payload[0].payload;
+
+                    return (
+                      <div className="bg-slate-800 p-2 rounded text-sm">
+                        <p className="font-bold">{data.name}</p>
+                        <p>Appearances: {data.appearances}</p>
+                      </div>
+                    );
+                  }}
+                />
+
                 <Bar
                   dataKey="appearances"
                   fill="#ef4444"
@@ -106,16 +128,16 @@ export default function DashboardPage() {
           </div>
         </GlassCard>
 
-        {/* STATUS */}
         <GlassCard>
           <h2 className="section-title">Character Status</h2>
 
           <div className="h-[260px]">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={status}>
                 <XAxis dataKey="status_clean" stroke="#9ca3af" />
                 <YAxis stroke="#9ca3af" />
                 <Tooltip />
+
                 <Bar dataKey="total" radius={[6, 6, 0, 0]}>
                   {status.map((entry: any, index: number) => (
                     <Cell
@@ -135,16 +157,70 @@ export default function DashboardPage() {
           </div>
         </GlassCard>
 
-        {/* EPISODES */}
         <GlassCard>
+          <h2 className="section-title">Gender Distribution</h2>
+
+          <div className="h-[260px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={gender}
+                  dataKey="total"
+                  nameKey="gender"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label
+                >
+                  {gender.map((entry, index) => (
+                    <Cell
+                      key={index}
+                      fill={
+                        ["#8b5cf6", "#ec4899", "#22c55e", "#f59e0b"][
+                          index % 4
+                        ]
+                      }
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </GlassCard>
+
+        <GlassCard className="col-span-full">
           <h2 className="section-title">Episodes with More Characters</h2>
 
           <div className="h-[260px]">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart data={episodes}>
-                <XAxis dataKey="episode_code" stroke="#9ca3af" />
+                <XAxis
+                  dataKey="episode_code"
+                  stroke="#9ca3af"
+                  hide={isMobile}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                  minTickGap={20}
+                />
                 <YAxis stroke="#9ca3af" />
-                <Tooltip />
+
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload || !payload.length) return null;
+                    const data = payload[0].payload;
+
+                    return (
+                      <div className="bg-slate-800 p-2 rounded text-sm">
+                        <p className="font-bold">
+                          {data.episode_code} - {data.name}
+                        </p>
+                        <p>{data.total_characters} characters</p>
+                      </div>
+                    );
+                  }}
+                />
+
                 <Bar
                   dataKey="total_characters"
                   fill="#6366f1"
@@ -159,7 +235,19 @@ export default function DashboardPage() {
   );
 }
 
-/* ---------------- COMPONENTS ---------------- */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  return isMobile;
+}
 
 function StatCard({ title, value, sub }: any) {
   return (
@@ -190,8 +278,6 @@ function GlassCard({ children, className = "" }: any) {
     </motion.div>
   );
 }
-
-/* ---------------- HELPERS ---------------- */
 
 function calculateSurvivalRate(status: any[]) {
   const alive =

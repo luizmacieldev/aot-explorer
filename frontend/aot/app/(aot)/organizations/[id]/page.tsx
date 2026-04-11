@@ -40,15 +40,14 @@ export default function Page() {
           <h1 className="text-3xl font-bold text-red-400">
             {org.name}
           </h1>
-        </div>
-      </div>
-
-      {/* BACK */}
-      <div className="max-w-6xl mx-auto px-6 mt-4">
+          <div className="max-w-6xl mx-auto px-6 mt-4">
         <Link href="/organizations" className="text-gray-400 hover:text-red-400">
           ← Back
         </Link>
       </div>
+        </div>
+      </div>
+
 
       {/* CONTENT */}
       <div className="p-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
@@ -87,31 +86,36 @@ export default function Page() {
           )}
         </div>
 
-        {/* NOTABLE MEMBERS */}
-        <div className="bg-slate-900 p-4 rounded-xl border border-red-900">
-          <h2 className="text-red-400 font-bold mb-3">
-            Notable Members
-          </h2>
-
-          <div className="flex flex-wrap gap-4">
-            {org.notable_members?.map((char) => (
-              <Link
-                key={char.id}
-                href={`/characters/${char.id}`}
-                className="text-center hover:scale-105 transition"
-              >
-                <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
-                  <Image
-                    src={char.img || "/no-image.png"}
-                    alt={char.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <p className="text-sm mt-1">{char.name}</p>
-              </Link>
-            ))}
-          </div>
+          {/* NOTABLE MEMBERS */}
+          
+            <div className="bg-slate-900 p-4 rounded-xl border border-red-900">
+              <h2 className="text-red-400 font-bold mb-3">
+                Notable Members
+              </h2>
+  {org.notable_members?.length > 0 ? (
+            <div className="flex flex-wrap gap-4">
+              {org.notable_members?.map((char) => (
+                <Link
+                  key={char.id}
+                  href={`/characters/${char.id}`}
+                  className="text-center hover:scale-105 transition"
+                >
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
+                    <Image
+                      src={char.img || "/no-image.png"}
+                      alt={char.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm mt-1">{char.name}</p>
+                </Link>
+              ))}
+            </div>
+       
+          ) : (
+            <p className="text-gray-400">No data</p>
+          )}
         </div>
       </div>
     </div>

@@ -7,8 +7,6 @@ import Image from "next/image";
 import { api } from "@/services/api";
 import { Location } from "@/types/aot";
 
-
-
 export default function Page() {
   const { id } = useParams();
   const [location, setLocation] = useState<Location | null>(null);
@@ -23,9 +21,11 @@ export default function Page() {
 
   if (!location) return <p className="text-white p-6">Loading...</p>;
 
+  const hasNotable = location.notable_inhabitants?.length > 0;
+  const hasFormer = location.notable_former_inhabitants?.length > 0;
+
   return (
     <div className="text-white">
-
       {/* HERO */}
       <div className="relative h-[300px]">
         <Image
@@ -43,14 +43,15 @@ export default function Page() {
           <h1 className="text-3xl font-bold text-red-400">
             {location.name}
           </h1>
-        </div>
-      </div>
-
+          
       {/* BACK */}
       <div className="max-w-6xl mx-auto px-6 mt-4">
         <Link href="/locations" className="text-gray-400 hover:text-red-400">
           ← Back
         </Link>
+      </div>
+      
+        </div>
       </div>
 
       {/* CONTENT */}
@@ -76,33 +77,37 @@ export default function Page() {
           )}
         </div>
 
-        {/* INHABITANTS */}
+        {/* NOTABLE INHABITANTS */}
         <div className="bg-slate-900 p-4 rounded-xl border border-red-900">
           <h2 className="text-red-400 font-bold mb-3">
             Notable Inhabitants
           </h2>
 
-          <div className="flex flex-wrap gap-4">
-            {location.notable_inhabitants?.map((char) => (
-              <Link
-                key={char.id}
-                href={`/characters/${char.id}`}
-                className="text-center hover:scale-105 transition"
-              >
-                <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
-                  <Image
-                    src={char.img}
-                    alt={char.name}
-                    fill
-                    priority
-                    loading="eager"
-                    className="object-cover"
-                  />
-                </div>
-                <p className="text-sm mt-1">{char.name}</p>
-              </Link>
-            ))}
-          </div>
+          {hasNotable ? (
+            <div className="flex flex-wrap gap-4">
+              {location.notable_inhabitants!.map((char) => (
+                <Link
+                  key={char.id}
+                  href={`/characters/${char.id}`}
+                  className="text-center hover:scale-105 transition"
+                >
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
+                    <Image
+                      src={char.img}
+                      alt={char.name}
+                      fill
+                      priority
+                      loading="eager"
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm mt-1">{char.name}</p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400">No data</p>
+          )}
         </div>
 
         {/* FORMER INHABITANTS */}
@@ -111,27 +116,31 @@ export default function Page() {
             Former Inhabitants
           </h2>
 
-          <div className="flex flex-wrap gap-4">
-            {location.notable_former_inhabitants?.map((char) => (
-              <Link
-                key={char.id}
-                href={`/characters/${char.id}`}
-                className="text-center hover:scale-105 transition"
-              >
-                <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
-                  <Image
-                    src={char.img}
-                    alt={char.name}
-                    fill
-                    priority
-                    loading="eager"
-                    className="object-cover"
-                  />
-                </div>
-                <p className="text-sm mt-1">{char.name}</p>
-              </Link>
-            ))}
-          </div>
+          {hasFormer ? (
+            <div className="flex flex-wrap gap-4">
+              {location.notable_former_inhabitants!.map((char) => (
+                <Link
+                  key={char.id}
+                  href={`/characters/${char.id}`}
+                  className="text-center hover:scale-105 transition"
+                >
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden mx-auto">
+                    <Image
+                      src={char.img}
+                      alt={char.name}
+                      fill
+                      priority
+                      loading="eager"
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-sm mt-1">{char.name}</p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400">No data</p>
+          )}
         </div>
 
       </div>

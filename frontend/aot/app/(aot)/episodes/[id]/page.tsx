@@ -41,6 +41,16 @@ export default function Page() {
           <h1 className="text-3xl font-bold">
             {episode.name}
           </h1>
+
+      {/* 🔙 BACK */}
+      <div className="max-w-6xl mx-auto px-6 mt-4">
+        <Link
+          href="/episodes"
+          className="text-gray-400 hover:text-red-400"
+        >
+          ← Back
+        </Link>
+      </div>
         </div>
       </div>
 
@@ -51,8 +61,8 @@ export default function Page() {
 
       <div
         className="
-          grid grid-cols-2
-          sm:grid-cols-3
+          grid grid-cols-1
+          sm:grid-cols-2
           md:grid-cols-4
           gap-6
         "
