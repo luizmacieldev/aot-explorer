@@ -63,7 +63,7 @@
         </h1>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
           {episodes.map((ep) => (
             <Card key={ep.id} item={ep} href="/episodes" type="episode" />
           ))}

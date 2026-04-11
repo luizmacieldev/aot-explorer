@@ -54,6 +54,7 @@ export default function CharactersPage() {
         md:grid-cols-3 
         lg:grid-cols-4 
         gap-6
+        auto-rows-fr
       ">
         {characters.map((char) => (
           <Card key={char.id} item={char} href="/characters" type="character" />

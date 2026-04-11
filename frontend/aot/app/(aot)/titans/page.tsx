@@ -15,7 +15,7 @@ export default function TitansPage() {
   }, []);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="p-8 max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
     {titans.map((titan) => (
       <Card key={titan.id} item={titan} href="/titans" type="titan" />
     ))}
