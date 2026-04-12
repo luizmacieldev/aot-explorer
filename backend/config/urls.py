@@ -18,8 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from aot.api.urls import urlpatterns as api_urlpatterns
 from stats.api.urls import urlpatterns as stats_api_urlpatterns
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +25,3 @@ urlpatterns = [
     path('api/stats/', include(stats_api_urlpatterns)),
 ]
 
-
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
