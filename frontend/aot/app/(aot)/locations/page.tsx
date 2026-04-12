@@ -42,13 +42,6 @@
       fetchLocations();
     }, []);
 
-    if (loading && locations.length === 0) {
-      return (
-        <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 animate-pulse">
-          Loading locations...
-        </div>
-      );
-    }
 
     useEffect(() => {
       if (!observerRef.current) return;
@@ -76,11 +69,12 @@
           ))}
         </div>
 
-        {loading && locations.length > 0 && (
-          <p className="text-center mt-4 text-gray-400">Loading more locations...</p>
-        )}
+
 
         <div ref={observerRef} className="h-10 mt-10" />
+        {loading &&(
+          <p className="text-center mt-4 text-gray-400">Loading more locations...</p>
+        )}
       </div>
     );
   }
