@@ -1,76 +1,138 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { api } from "@/services/api";
 import Card from "@/components/Card";
 import { CharacterBrief } from "@/types/aot";
-
 
 export default function CharactersPage() {
   const [characters, setCharacters] = useState<CharacterBrief[]>([]);
   const [nextPage, setNextPage] = useState<string | null>("characters/");
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const isFirstRender = useRef(true);
 
-  // 🔥 fetch data
-  const fetchCharacters = async () => {
-    if (!nextPage || loading) return;
+  const fetchCharacters = useCallback(
+    async (isSearch = false) => {
+      if (!isSearch && loading) return;
+      if (!isSearch && !nextPage) return;
 
-    setLoading(true);
+      setLoading(true);
 
-    const res = await api.get(nextPage);
+      try {
+        const url = isSearch
+          ? `characters/?search=${search}`
+          : nextPage;
 
-    setCharacters((prev) => [...prev, ...res.data.results]);
-    setNextPage(res.data.info.next_page);
+        if (!url) {
+          setLoading(false);
+          return;
+        }
 
-    setLoading(false);
-  };
+        const res = await api.get(url);
+        const data = res.data.results || res.data;
 
+        if (isSearch) {
+          setCharacters(data);
+          setNextPage(null);
+        } else {
+          setCharacters((prev) => {
+            const merged = [...prev, ...data];
+
+            const unique = Array.from(
+              new Map(merged.map((char) => [char.id, char])).values()
+            );
+
+            return unique;
+          });
+
+          setNextPage(res.data.info?.next_page);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [nextPage, loading, search]
+  );
+
+  // Initial load
   useEffect(() => {
     fetchCharacters();
   }, []);
 
-  // observer (scroll)
+  // Infinite scroll
   useEffect(() => {
+    if (!observerRef.current) return;
+    if (search) return;
+
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         fetchCharacters();
       }
     });
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
+    observer.observe(observerRef.current);
 
     return () => observer.disconnect();
-  }, [observerRef.current, nextPage]);
+  }, [fetchCharacters, search]);
+
+  // Search without clearing state aggressively
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (search) {
+      fetchCharacters(true);
+    } else {
+      setNextPage("characters/");
+      fetchCharacters();
+    }
+  }, [search]);
+
+  // Keep input focused
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [characters]);
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold text-red-400 mb-6">
         Characters
       </h1>
-      
-      <div className="
-        grid grid-cols-1 
-        sm:grid-cols-2 
-        md:grid-cols-3 
-        lg:grid-cols-4 
-        gap-6
-        auto-rows-fr
-      ">
+
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Search characters..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full mb-6 p-3 rounded-xl bg-slate-800 text-white border border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+      />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr">
         {characters.map((char) => (
           <Card key={char.id} item={char} href="/characters" type="character" />
         ))}
       </div>
 
-      {/*  trigger do scroll */}
       <div ref={observerRef} className="h-10 mt-10" />
 
       {loading && (
         <p className="text-center mt-4 text-gray-400">
           Loading...
+        </p>
+      )}
+
+      {!loading && characters.length === 0 && (
+        <p className="text-gray-400 text-center mt-6">
+          No characters found
         </p>
       )}
     </div>

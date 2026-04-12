@@ -28,7 +28,7 @@ export default function Page() {
   
       <div className="relative h-[400px]">
         <Image
-          src={character.img}
+          src={character.img || "/no-image.png"}
           alt={character.name}
           fill
           className="object-cover"
@@ -44,7 +44,7 @@ export default function Page() {
       {/* 🔙 BACK */}
       <div className="max-w-6xl mx-auto px-6 mt-4">
         <Link
-          href="/characters"
+          href="/characters" 
           className="text-gray-400 hover:text-red-400"
         >
           ← Back

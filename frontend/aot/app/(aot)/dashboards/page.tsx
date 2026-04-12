@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="p-8 text-gray-400 animate-pulse">
+      <div className="p-8 text-gray-400 opacity-70">
         Loading dashboard...
       </div>
     );

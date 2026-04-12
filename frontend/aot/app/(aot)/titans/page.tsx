@@ -21,7 +21,7 @@ export default function TitansPage() {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 animate-pulse">
+      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 opacity-70">
         Loading titans...
       </div>
     );
