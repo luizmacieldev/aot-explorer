@@ -123,6 +123,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 STATIC_URL = '/static/'
 
 if ENV == "prod":
@@ -133,3 +136,5 @@ if ENV == "prod":
     CORS_ALLOWED_ORIGIN_REGEXES = [
         r"https://.*\.vercel\.app",
     ]
+else:
+    CORS_ALLOW_ALL_ORIGINS = True

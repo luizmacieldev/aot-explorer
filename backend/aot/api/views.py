@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
@@ -51,6 +51,9 @@ class CharacterViewSet(viewsets.ModelViewSet):
         .prefetch_related("relatives", "episodes")
     )
     serializer_class = CharacterSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name__icontains']
+
     pagination_class = AttackOnTitanApiPagination
 
 
@@ -80,6 +83,8 @@ class EpisodeViewSet(viewsets.ModelViewSet):
         .prefetch_related("characters")
         .order_by("api_id", "id")
     )
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name__icontains']
     serializer_class = EpisodeSerializer
     pagination_class = AttackOnTitanApiPagination
     
