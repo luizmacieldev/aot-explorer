@@ -12,6 +12,8 @@ export default function CharactersPage() {
   const [search, setSearch] = useState("");
 
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const observerInstance = useRef<IntersectionObserver | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const isFirstRender = useRef(true);
 
@@ -65,28 +67,40 @@ export default function CharactersPage() {
     fetchCharacters();
   }, []);
 
-  // Infinite scroll
+  // Controlled infinite scroll observer
   useEffect(() => {
     if (!observerRef.current) return;
+
+    // Disconnect previous observer
+    if (observerInstance.current) {
+      observerInstance.current.disconnect();
+    }
+
+    // Disable observer during search
     if (search) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    observerInstance.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         fetchCharacters();
       }
     });
 
-    observer.observe(observerRef.current);
+    observerInstance.current.observe(observerRef.current);
 
-    return () => observer.disconnect();
+    return () => {
+      observerInstance.current?.disconnect();
+    };
   }, [fetchCharacters, search]);
 
-  // Search without clearing state aggressively
+  // Search logic
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
+
+    // Ensure observer resets when search changes
+    observerInstance.current?.disconnect();
 
     if (search) {
       fetchCharacters(true);
@@ -125,14 +139,14 @@ export default function CharactersPage() {
       <div ref={observerRef} className="h-10 mt-10" />
 
       {loading && (
-        <p className="text-center mt-4 text-gray-400 text-center">
-              <img
-                src="/loading.gif"
-                alt="Loading"
-                className="w-16 h-16 text-center mx-auto mb-4"
-             />
-          Loading Characters ...
-        </p>
+        <div className="text-center mt-4 text-gray-400">
+          <img
+            src="/loading.gif"
+            alt="Loading"
+            className="w-16 h-16 mx-auto mb-2"
+          />
+          Loading Characters...
+        </div>
       )}
 
       {!loading && characters.length === 0 && (
