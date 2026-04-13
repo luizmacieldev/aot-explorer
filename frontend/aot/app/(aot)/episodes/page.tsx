@@ -13,27 +13,31 @@ export default function EpisodesPage() {
   const [search, setSearch] = useState("");
 
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const observerInstance = useRef<IntersectionObserver | null>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const isFirstRender = useRef(true);
+  const requestIdRef = useRef(0);
 
   const fetchEpisodes = useCallback(
     async (isSearch = false) => {
-      if (!isSearch && loading) return;
+      const requestId = ++requestIdRef.current;
+
       if (!isSearch && !nextPage) return;
 
-      setLoading(true);
+      if (!isSearch) setLoading(true);
 
       try {
         const url = isSearch
           ? `episodes/?search=${search}`
           : nextPage;
 
-        if (!url) {
-          setLoading(false);
-          return;
-        }
+        if (!url) return;
 
         const res = await api.get(url);
+
+        if (requestId !== requestIdRef.current) return;
+
         const data = res.data.results || res.data;
 
         if (isSearch) {
@@ -56,10 +60,12 @@ export default function EpisodesPage() {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        if (requestId === requestIdRef.current && !isSearch) {
+          setLoading(false);
+        }
       }
     },
-    [nextPage, loading, search]
+    [nextPage, search]
   );
 
   // Initial load
@@ -67,33 +73,41 @@ export default function EpisodesPage() {
     fetchEpisodes();
   }, []);
 
-  // Infinite scroll
+  // Controlled infinite scroll
   useEffect(() => {
     if (!observerRef.current) return;
+
+    if (observerInstance.current) {
+      observerInstance.current.disconnect();
+    }
+
     if (search) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    observerInstance.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         fetchEpisodes();
       }
     });
 
-    observer.observe(observerRef.current);
+    observerInstance.current.observe(observerRef.current);
 
-    return () => observer.disconnect();
+    return () => {
+      observerInstance.current?.disconnect();
+    };
   }, [fetchEpisodes, search]);
 
-  // Search handling
+  // Search logic
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
 
+    observerInstance.current?.disconnect();
+
     if (search) {
       fetchEpisodes(true);
     } else {
-      // restore original list without refetch
       setEpisodes(originalEpisodes);
       setNextPage("episodes/");
     }
@@ -106,18 +120,13 @@ export default function EpisodesPage() {
 
   if (loading && episodes.length === 0) {
     return (
-      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 opacity-70">
-              {loading && (
-                <p className="text-center mt-4 text-gray-400 text-center">
-                      <img
-                        src="/loading.gif"
-                        alt="Loading"
-                        className="w-16 h-16 text-center mx-auto mb-4"
-                     />
-                  Loading episodes...
-                </p>
-              )}
-        
+      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400">
+        <img
+          src="/loading.gif"
+          alt="Loading"
+          className="w-16 h-16 mx-auto mb-4"
+        />
+        Loading episodes...
       </div>
     );
   }
@@ -149,14 +158,13 @@ export default function EpisodesPage() {
         </p>
       )}
 
-      {loading && (
-        <div className="grid grid-cols-4 gap-6 mt-6">
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={`loading-${i}`}
-              className="bg-slate-800/50 opacity-70 aspect-[16/9] rounded-xl"
-            />
-          ))}
+      {loading && episodes.length > 0 && (
+        <div className="text-center mt-6">
+          <img
+            src="/loading.gif"
+            alt="Loading"
+            className="w-12 h-12 mx-auto"
+          />
         </div>
       )}
 
