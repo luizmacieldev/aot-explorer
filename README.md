@@ -26,7 +26,6 @@ A full-stack project inspired by Attack on Titan, designed to explore characters
 - Next.js
 - TypeScript
 - Tailwind CSS
-- Axios
 - Recharts
 
 
