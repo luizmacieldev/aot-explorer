@@ -23,8 +23,13 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           
           {/* LOGO */}
-          <h1 className="text-red-500 font-bold text-xl tracking-wide">
-            AOT Explorer
+          <h1>
+            <Link
+              href="/titans"
+              className="text-red-500 font-bold text-xl tracking-wide"
+            >
+              AOT Explorer
+            </Link>
           </h1>
 
           {/* DESKTOP */}
