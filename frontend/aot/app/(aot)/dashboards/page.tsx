@@ -50,7 +50,12 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="p-8 text-gray-400 opacity-70">
+      <div className="p-8 text-gray-400 opacity-70 text-center">
+              <img
+                src="/loading.gif"
+                alt="Loading"
+                className="w-16 h-16 text-center mx-auto mb-4"
+             />
         Loading dashboard...
       </div>
     );

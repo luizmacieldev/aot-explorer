@@ -72,9 +72,16 @@
 
 
         <div ref={observerRef} className="h-10 mt-10" />
-        {loading &&(
-          <p className="text-center mt-4 text-gray-400">Loading more locations...</p>
-        )}
+      {loading && (
+        <p className="text-center mt-4 text-gray-400 text-center">
+              <img
+                src="/loading.gif"
+                alt="Loading"
+                className="w-16 h-16 text-center mx-auto mb-4"
+             />
+          Loading locations...
+        </p>
+      )}
       </div>
     );
   }

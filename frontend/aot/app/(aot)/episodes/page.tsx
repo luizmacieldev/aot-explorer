@@ -107,7 +107,17 @@ export default function EpisodesPage() {
   if (loading && episodes.length === 0) {
     return (
       <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 opacity-70">
-        Loading episodes...
+              {loading && (
+                <p className="text-center mt-4 text-gray-400 text-center">
+                      <img
+                        src="/loading.gif"
+                        alt="Loading"
+                        className="w-16 h-16 text-center mx-auto mb-4"
+                     />
+                  Loading episodes...
+                </p>
+              )}
+        
       </div>
     );
   }

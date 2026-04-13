@@ -21,7 +21,12 @@ export default function TitansPage() {
 
   if (loading) {
     return (
-      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 opacity-70">
+      <div className="p-8 max-w-7xl mx-auto text-center text-gray-400 opacity-70 text-center">
+              <img
+                src="/loading.gif"
+                alt="Loading"
+                className="w-16 h-16 text-center mx-auto mb-4"
+             />
         Loading titans...
       </div>
     );
