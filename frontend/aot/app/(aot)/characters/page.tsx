@@ -16,25 +16,28 @@ export default function CharactersPage() {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const isFirstRender = useRef(true);
+  const requestIdRef = useRef(0);
 
   const fetchCharacters = useCallback(
     async (isSearch = false) => {
-      if (!isSearch && loading) return;
+      const requestId = ++requestIdRef.current;
+
       if (!isSearch && !nextPage) return;
 
-      setLoading(true);
+      if (!isSearch) setLoading(true);
 
       try {
         const url = isSearch
           ? `characters/?search=${search}`
           : nextPage;
 
-        if (!url) {
-          setLoading(false);
-          return;
-        }
+        if (!url) return;
 
         const res = await api.get(url);
+
+        // ignore outdated responses
+        if (requestId !== requestIdRef.current) return;
+
         const data = res.data.results || res.data;
 
         if (isSearch) {
@@ -44,11 +47,9 @@ export default function CharactersPage() {
           setCharacters((prev) => {
             const merged = [...prev, ...data];
 
-            const unique = Array.from(
+            return Array.from(
               new Map(merged.map((char) => [char.id, char])).values()
             );
-
-            return unique;
           });
 
           setNextPage(res.data.info?.next_page);
@@ -56,10 +57,12 @@ export default function CharactersPage() {
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
+        if (requestId === requestIdRef.current && !isSearch) {
+          setLoading(false);
+        }
       }
     },
-    [nextPage, loading, search]
+    [nextPage, search]
   );
 
   // Initial load
@@ -99,7 +102,6 @@ export default function CharactersPage() {
       return;
     }
 
-    // Ensure observer resets when search changes
     observerInstance.current?.disconnect();
 
     if (search) {
