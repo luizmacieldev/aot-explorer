@@ -1,6 +1,5 @@
-# 🧠 Attack on Titan Analytics
-
-A full-stack data analytics application based on **Attack on Titan**, built to explore characters, titans, episodes, and relationships through interactive dashboards.
+# 🧍 AOT Explorer
+A full-stack project inspired by Attack on Titan, designed to explore characters, titans, episodes, and their relationships through interactive data visualizations.
 
 ---
 
@@ -8,9 +7,9 @@ A full-stack data analytics application based on **Attack on Titan**, built to e
 
 - 📊 Analytics dashboard (characters, episodes, status)
 - 🧍 Characters listing with infinite scroll
+- 🔎 Search for characters and episodes
 - 🧱 Titans data exploration
 - 📱 Responsive UI (mobile + hamburger menu)
-- 🖼 Optimized images with Next.js
 - ⚡ Performance-focused frontend
 
 ---
@@ -21,25 +20,30 @@ A full-stack data analytics application based on **Attack on Titan**, built to e
 - Python
 - Django
 - Django REST Framework
-- SQLite
+- PostgreSQL
 
 ### Frontend
-- Next.js (App Router)
+- Next.js
 - TypeScript
 - Tailwind CSS
-- Axios
-- Recharts (charts & analytics)
-- Framer Motion (UI animations)
+- Recharts
 
+
+### DevOps / Infra  
+- Docker  
+- Docker Compose  
+
+### Deployment  
+- Render (backend & database)  
+- Vercel (frontend) 
 ---
-
 ## 📊 Dashboard Features
 
 - Top Characters by appearances
 - Episodes with most characters
 - Character Status distribution (Alive / Deceased / Unknown)
 - Survival Rate calculation
-- Clean data visualization (bar charts)
+- Clean data visualization 
 
 ---
 
@@ -47,8 +51,8 @@ A full-stack data analytics application based on **Attack on Titan**, built to e
 
 - Data aggregation (ORM annotations)
 - API design for analytics endpoints
-- Data normalization (status cleaning)
-- Relationship modeling (ManyToMany)
+- Data normalization
+- Relationship modeling 
 - Derived metrics (e.g. survival rate)
 - Separation of concerns (services layer)
 
@@ -61,7 +65,6 @@ A full-stack data analytics application based on **Attack on Titan**, built to e
 - Sidebar navigation
 - Clean dark theme
 - Glass-style components
-- Performance optimized images (`next/image`)
 
 ---
 
@@ -70,8 +73,8 @@ A full-stack data analytics application based on **Attack on Titan**, built to e
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/aot-analytics.git
-cd aot-analytics
+git clone https://github.com/luizmacieldev/aot-explorer.git
+cd aot-explorer
 ```
 
 ---
@@ -83,6 +86,7 @@ cd backend
 
 pip install -r requirements.txt
 python manage.py migrate
+python manage.py import_data
 python manage.py runserver
 ```
 
@@ -109,8 +113,6 @@ http://127.0.0.1:8000/
 
 ---
 
----
-
 ## 🔄 API Endpoints
 
 ```bash
@@ -124,13 +126,6 @@ http://127.0.0.1:8000/
 /api/episodes/
 
 ```
-
----
-
-## 📈 Future Improvements
-
-- Filters (by season, group, titan)
-- Deployment (Vercel + backend hosting)
 
 ---
 
