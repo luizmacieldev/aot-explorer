@@ -7,7 +7,6 @@ import { Episode } from "@/types/aot";
 
 export default function EpisodesPage() {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
-  const [originalEpisodes, setOriginalEpisodes] = useState<Episode[]>([]);
   const [nextPage, setNextPage] = useState<string | null>("episodes/");
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -36,6 +35,7 @@ export default function EpisodesPage() {
 
         const res = await api.get(url);
 
+        // ignore outdated responses
         if (requestId !== requestIdRef.current) return;
 
         const data = res.data.results || res.data;
@@ -44,16 +44,13 @@ export default function EpisodesPage() {
           setEpisodes(data);
           setNextPage(null);
         } else {
-          const updateList = (prev: Episode[]) => {
+          setEpisodes((prev) => {
             const merged = [...prev, ...data];
 
             return Array.from(
               new Map(merged.map((ep) => [ep.id, ep])).values()
             );
-          };
-
-          setEpisodes(updateList);
-          setOriginalEpisodes(updateList);
+          });
 
           setNextPage(res.data.info?.next_page);
         }
@@ -108,8 +105,9 @@ export default function EpisodesPage() {
     if (search) {
       fetchEpisodes(true);
     } else {
-      setEpisodes(originalEpisodes);
+      setEpisodes([]);
       setNextPage("episodes/");
+      fetchEpisodes();
     }
   }, [search]);
 
