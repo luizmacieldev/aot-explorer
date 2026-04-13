@@ -1,4 +1,4 @@
-# 🧠 AOT Explorer
+# 🧍 AOT Explorer
 A full-stack project inspired by Attack on Titan, designed to explore characters, titans, episodes, and their relationships through interactive data visualizations.
 
 ---
@@ -29,7 +29,13 @@ A full-stack project inspired by Attack on Titan, designed to explore characters
 - Recharts
 
 
-### Docker (containerization)
+### DevOps / Infra  
+- Docker  
+- Docker Compose  
+
+### Deployment  
+- Render (backend & database)  
+- Vercel (frontend) 
 ---
 ## 📊 Dashboard Features
 
@@ -67,8 +73,8 @@ A full-stack project inspired by Attack on Titan, designed to explore characters
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/aot-analytics.git
-cd aot-analytics
+git clone https://github.com/luizmacieldev/aot-explorer.git
+cd aot-explorer
 ```
 
 ---
@@ -80,6 +86,7 @@ cd backend
 
 pip install -r requirements.txt
 python manage.py migrate
+python manage.py import_data
 python manage.py runserver
 ```
 
@@ -103,8 +110,6 @@ Make sure your backend runs on:
 ```bash
 http://127.0.0.1:8000/
 ```
-
----
 
 ---
 
