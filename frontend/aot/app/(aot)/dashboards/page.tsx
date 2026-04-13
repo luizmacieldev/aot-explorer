@@ -68,7 +68,7 @@ export default function DashboardPage() {
           Attack on Titan Analytics
         </h1>
         <p className="text-gray-400 text-sm mt-1">
-          Character and episode insights
+          Characters and episodes insights
         </p>
       </div>
 
