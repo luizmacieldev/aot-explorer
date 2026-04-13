@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['*']
 
 ENV = os.getenv("ENV", "dev")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Application definition
 
 INSTALLED_APPS = [

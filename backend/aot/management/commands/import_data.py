@@ -28,7 +28,7 @@ def extract_id(url, resource):
     return int(match.group(1)) if match else None
 
 def character_api_id_from_url(url):
-    """Extrai o id numérico de URLs .../characters/<id> ou dict com id."""
+    """Extract numeric id from URLs .../characters/<id> or dict with id."""
     if isinstance(url, dict):
         # If it's a dict with 'id' key, extract it directly
         return url.get("id")
@@ -39,7 +39,8 @@ def character_api_id_from_url(url):
 
 
 def fetch_all(url):
-    """Paginação no formato da API (info.next_page / info.next)."""
+    # """Paginação no formato da API (info.next_page / info.next)."""
+    """Paginate through API results using info.next_page or info.next."""
     results = []
 
     while url:
@@ -97,7 +98,7 @@ def import_organizations(data):
                 "name": org["name"],
                 "img": org.get("img", ""),
                 "occupations": org.get("occupations", []),
-                #"notable_members": notable_members_ids,  # JSON agora
+                #"notable_members": notable_members_ids,  # JSON field now
                 #"notable_former_members": notable_former_members_ids,
                 "affiliation": org.get("affiliation", ""),
                 #"debut": None,  # 🔥 removido relacionamento
@@ -174,7 +175,7 @@ def import_titans(data):
                 "height": t.get("height") or "",
                 "abilities": t.get("abilities", []),
                 "allegiance": t.get("allegiance", ""),
-                "current_inheritor": None,  # 🔥 removido
+                "current_inheritor": None,  # removido
                 #"former_inheritors": former_ids,  # JSON
             },
         )
@@ -451,14 +452,14 @@ class Command(BaseCommand):
         self.stdout.write("Loading API data once...")
         data = load_all_data()
 
-        self.stdout.write("FASE 1 - Base data")
+        self.stdout.write("PART 1 - Base data")
         import_episodes(data["episodes"])
         import_characters(data["characters"])
         import_titans(data["titans"])
         import_organizations(data["organizations"])
         import_locations(data["locations"])
 
-        self.stdout.write("FASE 2 - Linking")
+        self.stdout.write("PART 2 - Linking")
         link_characters(data["characters"])
         link_episodes(data["episodes"])
         link_titans(data["titans"])
