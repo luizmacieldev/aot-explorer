@@ -29,7 +29,7 @@ export default function Page() {
       {/* HERO */}
       <div className="relative h-[300px]">
         <Image
-          src={location.img}
+          src={location.img || "/no-image.png"} 
           alt={location.name}
           fill
           priority
